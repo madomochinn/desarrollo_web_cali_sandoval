@@ -9,12 +9,12 @@
 <body style="text-align: center;">
     <p><b>¿Está seguro que desea agregar este aviso de adopción?</b></p>
     
-    <form action="{{ url_for('confirmacion2') }}" method="POST">
-        <button type="submit">Sí, estoy seguro</button>
+    <form action="{{ url_for('confirmacion2') }}" method="POST" class="boton">
+        Sí, estoy seguro
     </form>
     
-    <a href="{{ url_for('formulario') }}">
-        <button type="button">No, no estoy seguro, quiero volver al formulario</button>
+    <a href="{{ url_for('formulario') }}" class="boton">
+        No, no estoy seguro, quiero volver al formulario
     </a>
 </body>
 </html>
