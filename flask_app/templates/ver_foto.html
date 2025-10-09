@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Foto | Aviso de Adopción</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/formato.css') }}">
+</head>
+<body>
+    <div class="fotoZoom">
+        <!-- foto zoom -->
+        <img src="{{ url_for('static', filename='uploads/' + foto.nombre_archivo) }}" alt="Foto del animal" width="800" height="600">
+        
+        <br>
+        
+        <!-- volver al aviso -->
+        <a href="{{ url_for('aviso_detalle', aviso_id=foto.aviso_id) }}" class="boton">
+            Volver al aviso
+        </a>
+    </div>
+</body>
+</html>
