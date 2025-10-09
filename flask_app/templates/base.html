@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Sitio de Adopción{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/formato.css') }}">
+</head>
+<body>
+    {% block content %}{% endblock %}
+    
+    <script src="{{ url_for('static', filename='js/region_comuna.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/validador_tarea.js') }}"></script>
+</body>
+</html>

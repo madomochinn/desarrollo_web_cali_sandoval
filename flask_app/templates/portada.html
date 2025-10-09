@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sitio de adopción</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/formato.css') }}">
+</head>
+<body>        
+    <!-- PORTADA DE LA PAGINA -->
+    <div class="caja_botones">
+        <h1>Bienvenido al sitio de adopción</h1>
+        <a href="{{ url_for('formulario') }}">
+            <button type="button" id="btn-agregar">Agregar aviso de adopción</button>
+        </a>
+        <a href="{{ url_for('listado') }}">
+            <button type="button" id="btn-listado">Ver listado de adopciones</button>
+        </a>
+        <a href="{{ url_for('estadisticas') }}">
+            <button type="button" id="btn-estadistica">Estadísticas</button>
+        </a>
+    </div>
+
+    <!-- TABLA MÁS RECIENTES -->
+    <h3 class="contenedor">Avisos de adopción más recientes</h3>
+    <table>
+        <tr>
+            <th>Fecha publicación</th>
+            <th>Comuna</th>
+            <th>Sector</th>
+            <th>Cantidad, Tipo y Edad</th>
+            <th>Foto</th>
+        </tr>
+
+        {% for aviso in avisos %}
+        <tr data-url="{{ url_for('aviso_detalle', aviso_id=aviso.id) }}">
+            <td>{{ aviso.fecha_ingreso.strftime('%Y-%m-%d') }}</td>
+            <td>{{ aviso.comuna.nombre }}</td>
+            <td>{{ aviso.sector|e }}</td>
+            <td>{{ aviso.cantidad }} {{ aviso.tipo }} <br> {{ aviso.edad }} {% if aviso.unidad_medida == 'a' %}años{% else %}meses{% endif %}</td>
+            <td>
+                <img src="{{ url_for('static', filename=aviso.foto_principal.ruta_archivo) }}" alt="Foto del animal" width="320" height="240">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

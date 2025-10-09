@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario | Sitio de adopción</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/formato.css') }}">
+</head>
+
+<body>
+    <!-- errores de validación del servidor -->
+    {% if errores %}
+    <div style="color: red; border: 1px solid red; padding: 10px; margin: 10px;">
+        <h4>Errores encontrados:</h4>
+        <ul>
+            {% for error in errores %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div id="formulario">
+        
+        <form action="{{ url_for('formulario') }}" method="POST" enctype="multipart/form-data">
+
+            <div class="contenedor">
+                <h3><b>INFORMACIÓN DEL LUGAR DE ENTREGA</b></h3>
+
+                <label for="selectRegion"><b>Región:</b></label>
+                <select name="region" id="selectRegion" required>
+                    <option value="" disabled selected>--Selecciona una región--</option>
+                    {% for region in regiones %}
+                    <option value="{{ region.id }}">{{ region.nombre }}</option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label for="selectComuna"><b>Comuna:</b></label>
+                <select name="comuna" id="selectComuna" disabled required>
+                    <option value="" disabled selected>--Selecciona una comuna--</option>
+                </select><br><br>
+
+                <label><b>Sector:</b></label>
+                <input name="sector" id="sector" maxlength="100">
+            
+            </div>
+
+            <br>
+
+            <div class="contenedor">
+                <h3><b>DATOS DE CONTACTO</b></h3>
+
+                <label><b>Nombre:</b></label>
+                <input name="nombreContacto" id="nombreContacto" type="text" minlength="3" maxlength="200" required><br><br>
+
+                <label><b>Email:</b></label>
+                <input name="email" id="email" type="email" maxlength="100" required><br><br>
+
+                <label><b>Número de celular:</b></label>
+                <input name="fono" id="fono" type="tel" maxlength="13" placeholder="+569.12345678"><br><br>
+
+                <label><b>Contactar por...</b></label><br>
+                
+                <input type="checkbox" name="cb1" id="cb1" value="whatsapp" onclick="mostrarInput('inputCB1')">
+                <label for="cb1"> WhatsApp</label>
+                <div id="inputCB1" style="display: none;">
+                    <input type="text" name="contacto_whatsapp" placeholder="Escribe tu ID o URL de contacto" minlength="4" maxlength="50">
+                </div><br>
+
+                <input type="checkbox" name="cb2" id="cb2" value="telegram" onclick="mostrarInput('inputCB2')">
+                <label for="cb2"> Telegram</label>
+                <div id="inputCB2" style="display: none;">
+                    <input type="text" name="contacto_telegram" placeholder="Escribe tu ID o URL de contacto" minlength="4" maxlength="50">
+                </div><br>
+
+                <input type="checkbox" name="cb3" id="cb3" value="x" onclick="mostrarInput('inputCB3')">
+                <label for="cb3"> X</label>
+                <div id="inputCB3" style="display: none;">
+                    <input type="text" name="contacto_x" placeholder="Escribe tu ID o URL de contacto" minlength="4" maxlength="50">
+                </div><br>
+
+                <input type="checkbox" name="cb4" id="cb4" value="instagram" onclick="mostrarInput('inputCB4')">
+                <label for="cb4"> Instagram</label>
+                <div id="inputCB4" style="display: none;">
+                    <input type="text" name="contacto_instagram" placeholder="Escribe tu ID o URL de contacto" minlength="4" maxlength="50">
+                </div><br>
+
+                <input type="checkbox" name="cb5" id="cb5" value="tiktok" onclick="mostrarInput('inputCB5')">
+                <label for="cb5"> TikTok</label>
+                <div id="inputCB5" style="display: none;">
+                    <input type="text" name="contacto_tiktok" placeholder="Escribe tu ID o URL de contacto" minlength="4" maxlength="50">
+                </div><br>
+
+                <input type="checkbox" name="cb6" id="cb6" value="otro" onclick="mostrarInput('inputCB6')">
+                <label for="cb6"> Otro</label>
+                <div id="inputCB6" style="display: none;">
+                    <input type="text" name="contacto_otro" placeholder="Escribe tu ID o URL de contacto" minlength="4" maxlength="50">
+                </div><br>
+
+            </div>
+            
+            <br>
+
+            <div class="contenedor">
+                <h3><b>INFORMACIÓN DE LOS ANIMALES EN ADOPCIÓN</b></h3>
+
+                <label for="tipo"><b>Tipo:</b></label>
+                <select name="tipo" id="tipo" required>
+                    <option value="" disabled selected>-- Selecciona un tipo --</option>
+                    <option value="gato">Gato</option>
+                    <option value="perro">Perro</option>
+                </select><br><br>
+
+                <label><b>Cantidad:</b></label>
+                <input name="cantidad" id="cantidad" type="number" min="1" required><br><br>
+
+                <label><b>Edad:</b></label>
+                <input name="edad" id="edad" type="number" min="1" required><br><br>
+
+                <label for="ume"><b>Unidad medida edad:</b></label>
+                <select name="ume" id="ume" required>
+                    <option value="" disabled selected>--Selecciona unidad--</option>
+                    <option value="meses">Meses</option>
+                    <option value="años">Años</option>
+                </select><br><br>
+
+                <label><b>Fecha disponible para entrega:</b></label>
+                <input name="fecha_disponible" id="fecha_disponible" type="datetime-local" required><br><br>
+            
+                <label><b>Descripción:</b></label><br>
+                <textarea name="descripcion" id="descripcion" rows="10" cols="50" maxlength="500">Escriba una descripción de la mascota.</textarea><br><br>
+
+                <label><b>Foto:</b></label><br>
+                <div id="contenedorFotos">
+                    <input type="file" name="fotoMascota" accept="image/*" required>
+                </div>
+                <br>
+                <button type="button" onclick="agregarOtraFoto()">Agregar otra foto</button>
+
+            </div>
+
+            <br>
+
+            <!-- BOTONES -->
+            <div class="caja_botones">
+                <button type="submit" id="btn-agregar-aviso">Agregar este aviso de adopción</button>
+                <a href="{{ url_for('portada') }}">
+                    <button type="button" id="btn-volver">Volver atrás</button>
+                </a>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        // Cargar comunas cuando se selecciona una región
+        document.getElementById('selectRegion').addEventListener('change', function() {
+            const regionId = this.value;
+            const comunaSelect = document.getElementById('selectComuna');
+            
+            if (regionId) {
+                fetch('/api/comunas/' + regionId)
+                    .then(response => response.json())
+                    .then(comunas => {
+                        comunaSelect.innerHTML = '<option value="" disabled selected>--Selecciona una comuna--</option>';
+                        comunas.forEach(comuna => {
+                            const option = document.createElement('option');
+                            option.value = comuna.id;
+                            option.textContent = comuna.nombre;
+                            comunaSelect.appendChild(option);
+                        });
+                        comunaSelect.disabled = false;
+                    });
+            } else {
+                comunaSelect.innerHTML = '<option value="" disabled selected>--Selecciona una comuna--</option>';
+                comunaSelect.disabled = true;
+            }
+        });
+
+        function mostrarInput(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function ocultarInput(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function agregarOtraFoto() {
+            let contenedor = document.getElementById("contenedorFotos");
+            let cantidadActual = contenedor.querySelectorAll('input[type="file"]').length;
+
+            if (cantidadActual >= 5) {
+                alert("Solo se pueden subir hasta 5 fotos.");
+                return;
+            }
+
+            let nuevoInput = document.createElement("input");
+            nuevoInput.type = "file";
+            nuevoInput.name = "fotoMascota";
+            nuevoInput.accept = "image/*";
+            contenedor.appendChild(document.createElement("br"));
+            contenedor.appendChild(nuevoInput);
+        }
+    </script>
+    <script src="{{ url_for('static', filename='js/validador_tarea.js') }}"></script>
+</body>
+</html>

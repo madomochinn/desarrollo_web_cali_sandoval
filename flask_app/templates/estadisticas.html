@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Estadisticas | Sitio de adopción</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/formato.css') }}">
+</head>
+
+<body style="text-align: center;">
+    <img src="{{ url_for('static', filename='img/fotos-estadisticas/grafico-linea.png') }}" alt="Cantidad de avisos por dia"><br><br>
+<img src="{{ url_for('static', filename='img/fotos-estadisticas/grafico-torta.png') }}" alt="Total de avisos por tipo de mascota"><br><br>
+<img src="{{ url_for('static', filename='img/fotos-estadisticas/grafico-barras.png') }}" alt="Cantidad de avisos de adopción de perros y gatos por mes"><br><br>
+
+
+    <div class="caja_botones">
+        <a href="{{ url_for('portada') }}">
+            <button type="button" id="btn-volver-estadisticas">Volver al inicio</button>
+        </a>
+    </div>
+
+</body>
+
+
+</html>
