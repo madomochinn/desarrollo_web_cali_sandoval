@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Aviso de Adopción</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/formato.css') }}">
+</head>
+
+<body>
+    <div id="aviso-{{ aviso.id }}" class="contenedor">
+        <h4><b><u>Ubicación</u></b></h4>
+        <p><b>Región:</b> {{ aviso.comuna.region.nombre }}</p>
+        <p><b>Comuna:</b> {{ aviso.comuna.nombre }}</p>
+        <p><b>Sector:</b> {{ aviso.sector|e }}</p>
+
+        <h4><b><u>Información de Contacto</u></b></h4>
+        <p><b>Nombre:</b> {{ aviso.nombre|e }}</p>
+        <p><b>Email:</b> {{ aviso.email|e }}</p>
+        <p><b>Teléfono:</b> {{ aviso.celular|e }}</p>
+        <p><b>Método de contacto:</b> 
+            {% for contacto in contactos %}
+                {{ contacto.nombre|e }}: {{ contacto.identificador }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+
+        <h4><b><u>Información del Animal</u></b></h4>
+        <p><b>Tipo:</b> {{ aviso.tipo }}</p>
+        <p><b>Cantidad:</b> {{ aviso.cantidad }}</p>
+        <p><b>Edad:</b> {{ aviso.edad }} {% if aviso.unidad_medida == 'a' %}años{% else %}meses{% endif %}</p>
+        <p><b>Descripción:</b> {{ aviso.descripcion|e }}</p>
+        <p><b>Foto:</b><br>
+            {% for foto in fotos %}
+                <a href="{{ url_for('ver_foto', foto_id=foto.id) }}">
+                    <img src="{{ url_for('static', filename='uploads/' + foto.nombre_archivo) }}" alt="Foto del animal" width="320" height="240" style="cursor:pointer;"><br>
+                </a>
+            {% endfor %}
+        </p>
+
+        <h4><b><u>Información del Aviso</u></b></h4>
+        <p><b>Fecha de publicación:</b> {{ aviso.fecha_ingreso.strftime('%Y-%m-%d %H:%M') }}</p>
+        <p><b>Fecha de entrega:</b> {{ aviso.fecha_entrega.strftime('%Y-%m-%d %H:%M') }}</p>
+
+    
+        <hr>
+    <div class="contenedor">
+        <h3>Añadir un Comentario</h3>
+        <form action="{{ url_for('comentar', aviso_id=aviso.id) }}" method="POST">
+            <label for="nombre">Tu Nombre:</label><br>
+            <input type="text" id="nombre" name="nombre" required maxlength="80"><br><br>
+            
+            <label for="texto">Comentario (máx. 300 caracteres):</label><br>
+            <textarea id="texto" name="texto" rows="4" cols="50" required maxlength="300"></textarea><br><br>
+            
+            <button type="submit" class="boton">Enviar Comentario</button>
+        </form>
+
+        <hr>
+
+        <h3>Comentarios ({{ comentarios|length }})</h3>
+
+        {% if comentarios %}
+            {% for comentario in comentarios %}
+            <div class="comentario-individual" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; text-align: left; background-color: #f9f9f9;">
+                <p>
+                    <strong>{{ comentario.nombre|e }}</strong> 
+                    <small>({{ comentario.fecha.strftime('%Y-%m-%d %H:%M') }})</small>
+                </p>
+                <p style="margin-top: 5px;">{{ comentario.texto|e }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Sé el primero en comentar este aviso.</p>
+        {% endif %}
+    </div>
+
+        <div class="caja_botones">
+            <a href="{{ url_for('listado') }}" class="boton">
+                Volver al listado
+            </a>
+            <a href="{{ url_for('portada') }}" class="boton">
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</body>
+</html>

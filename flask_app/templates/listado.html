@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mascotas publicadas | Sitio de adopción</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/formato.css') }}">
+</head>
+
+<body>
+
+    <!-- LISTADO DE AVISOS -->
+    <table>
+        <tr>
+            <th>Fecha Publicación</th>
+            <th>Fecha Entrega</th>
+            <th>Comuna</th>
+            <th>Sector</th>
+            <th>Cantidad, Tipo y Edad</th>
+            <th>Nombre Contacto</th>
+            <th>Total Fotos</th>
+        </tr>
+
+        {% for aviso in avisos %}
+        <tr class="clickable-row" data-url="{{ url_for('aviso_detalle', aviso_id=aviso.id) }}">
+            <td>{{ aviso.fecha_ingreso.strftime('%Y-%m-%d') }}</td>
+            <td>{{ aviso.fecha_entrega.strftime('%Y-%m-%d') }}</td>
+            <td>{{ aviso.comuna.nombre }}</td>
+            <td>{{ aviso.sector|e }}</td>
+            <td>{{ aviso.cantidad }} {{ aviso.tipo }} <br> {{ aviso.edad }} {% if aviso.unidad_medida == 'a' %}años{% else %}meses{% endif %}</td>
+            <td>{{ aviso.nombre|e }}</td>
+            <td>
+                <img src="{{ url_for('static', filename=aviso.foto_principal.ruta_archivo) }}" alt="Foto del animal" width="320" height="240">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- PAGINACIÓN -->
+    <div class="caja_botones">
+        {% if total_paginas > 0 %}
+            {% if pagina > 1 %}
+                <a href="{{ url_for('listado', pagina=pagina-1) }}">
+                    <button type="button">Anterior</button>
+                </a>
+            {% endif %}
+        
+            <span>Página {{ pagina }} de {{ total_paginas }}</span>
+        
+            {% if pagina < total_paginas %}
+                <a href="{{ url_for('listado', pagina=pagina+1) }}">
+                    <button type="button">Siguiente</button>
+                </a>
+            {% endif %}
+        {% else %}
+            <span>No hay avisos para mostrar</span>
+        {% endif %}
+    </div>
+
+    <div class="caja_botones">
+        <a href="{{ url_for('portada') }}" class="boton">
+            Volver al inicio
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var rows = document.querySelectorAll('.clickable-row');
+            rows.forEach(function(row) {
+                row.addEventListener('click', function() {
+                    window.location.href = this.getAttribute('data-url');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
