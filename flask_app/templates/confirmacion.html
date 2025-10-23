@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de envío</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/formato.css') }}">
+</head>
+
+<body style="text-align: center;">
+    <p><b>¿Está seguro que desea agregar este aviso de adopción?</b></p>
+    
+    <form action="{{ url_for('confirmacion2') }}" method="POST">
+        <button type="submit" class="boton">Sí, estoy seguro</button>
+    </form>
+    
+    <a href="{{ url_for('formulario') }}" class="boton">
+        No, no estoy seguro, quiero volver al formulario
+    </a>
+</body>
+</html>

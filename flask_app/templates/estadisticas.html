@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Estadisticas | Sitio de adopción</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/formato.css') }}">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+
+<body style="text-align: center;">
+    <div class="grafico-contenedor">
+        <h3>Cantidad de Avisos por Día</h3>
+        <div id="graficoLineas" style="width:100%; height:400px;"></div>
+    </div>
+
+    <div class="grafico-contenedor">
+        <h3>Distribución por Tipo de Mascota</h3>
+        <div id="graficoTorta" style="width:100%; height:400px;"></div>
+    </div>
+    
+    <div class="grafico-contenedor">
+        <h3>Avisos por Mes y Tipo</h3>
+        <div id="graficoBarras" style="width:100%; height:400px;"></div>
+    </div>
+
+
+    <div class="caja_botones">
+        <a href="{{ url_for('portada') }}" class="boton">
+            Volver al inicio
+        </a>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/estadisticas.js') }}"></script>
+
+</body>
+
+</html>
