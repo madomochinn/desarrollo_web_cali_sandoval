@@ -1,0 +1,72 @@
+button {
+    background-color: #04AA6D;
+    color: white;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #FFFFFF;
+  }
+  
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+.portada {
+    text-align: center;
+    background-color: #9CE6A8;
+}
+
+.caja_botones{
+    text-align: center;
+}
+
+.contenedor {
+    border: 1px solid #18AB32;
+    text-align: center;
+}
+
+.fotoZoom {
+    text-align: center;
+}
+
+.modal-contenido {
+    background-color: #F0F8FF;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.clickable-row {
+    cursor: pointer;
+}
+
+.clickable-row:hover {
+    background-color: #f0f0f0;
+}
+
+.boton {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.boton:hover {
+    background: #45a049;
+}

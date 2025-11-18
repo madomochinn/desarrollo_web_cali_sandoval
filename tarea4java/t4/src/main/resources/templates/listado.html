@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mascotas publicadas | Sitio de adopción</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/formato.css}">
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Fecha Publicación</th>
+            <th>Sector</th>
+            <th>Cantidad, Tipo y Edad</th>
+            <th>Comuna</th>
+            <th>Nota</th>
+            <th></th>
+        </tr>
+
+        <tr th:each="aviso : ${avisos}" th:if="${aviso != null}" th:data-url="@{/aviso/{id}(id=${aviso.id})}">
+            <td th:text="${aviso.id}">1</td>
+            <td th:text="${#temporals.format(aviso.fechaIngreso, 'yyyy-MM-dd')}">2025-01-01</td>
+            <td th:text="${aviso.sector}">Sector</td>
+            <td>
+                <span th:text="${aviso.cantidad}">1</span> 
+                <span th:text="${aviso.tipo}">gato</span> <br> 
+                <span th:text="${aviso.edad}">2</span> 
+                <span th:text="${aviso.unidadMedida == 'a' ? 'años' : 'meses'}">meses</span>
+            </td>
+            <td th:text="${aviso.comuna}">Comuna</td>
+            <td th:id="'nota-' + ${aviso.id}">
+                <span th:text="${aviso.promedioNota != null and aviso.promedioNota > 0 ? aviso.promedioNota : '-'}">-</span>
+            </td>
+            <td>
+                <button type="button" th:onclick="|evaluarAviso(${aviso.id})|">Evaluar</button>
+            </td>
+        </tr>
+    </table>
+
+    <div class="caja_botones">
+        <span th:if="${total_paginas > 0}">
+            <a th:if="${pagina > 1}" th:href="@{/listado(pagina=${pagina-1})}">
+                <button type="button">Anterior</button>
+            </a>
+        
+            <span th:text="|Página ${pagina} de ${total_paginas}|">Página 1 de 1</span>
+        
+            <a th:if="${pagina < total_paginas}" th:href="@{/listado(pagina=${pagina+1})}">
+                <button type="button">Siguiente</button>
+            </a>
+        </span>
+        <span th:if="${total_paginas <= 0}">
+            <span>No hay avisos para mostrar</span>
+        </span>
+    </div>
+
+    <script>
+        async function evaluarAviso(avisoId) {
+            let nota;
+            let notaValida = false;
+
+            while (!notaValida) {
+                const input = prompt("Ingrese una nota entre 1 y 7 para el aviso " + avisoId + ":");
+
+                if (input === null) return;
+                
+                if (input.includes('.') || isNaN(+input) || input.includes(',')) {
+                    alert("La nota debe ser un número entero sin decimales.");
+                    return;
+                }
+
+
+                nota = parseInt(input);
+
+                // validar que sea un número entero entre 1 y 7
+                if (Number.isInteger(nota) && nota >= 1 && nota <= 7) {
+                    notaValida = true;
+                } else {
+                    alert("Nota inválida. Debe ser un número entero entre 1 y 7.");
+                }
+            }
+
+            try {
+                const response = await fetch(`/api/avisos/${avisoId}/evaluar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nota: nota })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al guardar la nota. Código: ' + response.status);
+                }
+
+                // recibir y actualizar la nueva nota promedio
+                const data = await response.json();
+                const nuevaNotaPromedio = data.promedio;
+                
+                const notaElement = document.getElementById(`nota-${avisoId}`);
+                if (notaElement) {
+                    notaElement.textContent = nuevaNotaPromedio > 0 ? nuevaNotaPromedio.toFixed(1) : '-';
+                }
+
+                alert(`Nota ${nota} guardada con éxito. Nuevo promedio: ${nuevaNotaPromedio > 0 ? nuevaNotaPromedio.toFixed(1) : '-'}`);
+
+            } catch (error) {
+                console.error('Error en la evaluación asíncrona:', error);
+                alert('Ocurrió un error al intentar evaluar el aviso.');
+            }
+        }
+    </script>
+</body>
+</html>
